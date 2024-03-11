@@ -7,6 +7,7 @@ package service
 import (
 	"bytes"
 	"encoding/json"
+	"fmt"
 	"io"
 	"net/http"
 
@@ -67,13 +68,15 @@ func parse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	fmt.Println(f)
+
 	err = f.Validate()
 	if err != nil {
 		outputError(w, http.StatusNotImplemented, err)
 		return
 	}
 
-	outputSuccess(w, "valid file")
+	outputSuccess(w, "valid")
 }
 
 // print - print bai2 report after parse
