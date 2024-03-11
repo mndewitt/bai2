@@ -27,7 +27,7 @@ func outputSuccess(w http.ResponseWriter, output string) {
 	w.WriteHeader(http.StatusOK)
 	w.Header().Set("Content-Type", "application/json; charset=utf-8")
 	json.NewEncoder(w).Encode(map[string]interface{}{
-		"status": output,
+		"groups": output,
 	})
 }
 
@@ -76,7 +76,23 @@ func parse(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	outputSuccess(w, "valid")
+	w.WriteHeader(http.StatusOK)
+	w.Header().Set("Content-Type", "application/json; charset=utf-8")
+
+	// All the data objects from the file are in the 'f' struct
+	// See pkg/lib/file.go - Bai2 struct to see how this is composed
+
+	// So, at the top level there are file level data points..
+	// log.Println(f.Receiver)
+	// log.Println(f.Sender)
+
+	// Then, the Groups array, which in turn contains an Accounts array with details of account balance,
+	// transactions, etc...
+	json.NewEncoder(w).Encode(map[string]interface{}{
+		"groups": f.Groups,
+		"sender": f.Sender,
+		"receiver": f.Receiver,
+	})
 }
 
 // print - print bai2 report after parse
